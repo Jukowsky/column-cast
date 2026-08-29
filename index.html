@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>redcast — soL köşe yazıları sesli arşiv</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0; padding: 3rem 1.25rem;
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #12161e; color: #e8e8ea;
+  }
+  main { max-width: 42rem; margin: 0 auto; }
+  h1 { font-size: 1.9rem; margin: 0 0 .25rem; }
+  .accent { color: #e05252; }
+  .lede { color: #a8adb8; margin: 0 0 2.5rem; }
+  h2 { font-size: 1.1rem; margin: 2.25rem 0 .6rem; }
+  ol { padding-left: 1.2rem; }
+  li { margin: .35rem 0; }
+  a { color: #7fb2ff; }
+  footer { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #2a2f3a; color: #8b909c; font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>red<span class="accent">cast</span></h1>
+  <p class="lede">soL Haber Portalı köşe yazılarının sesli arşivi.</p>
+
+  <p>
+    redcast, <a href="https://haber.sol.org.tr/kose-yazilari">haber.sol.org.tr</a>
+    üzerinde yayımlanan köşe yazılarını günlük olarak takip eden, metinleri Türkçe
+    yapay ses (metin okuma) ile seslendiren ve elde edilen kayıtları bir YouTube
+    kanalında yayımlayan kişisel bir otomasyon aracıdır. Amaç, yazıları okumaya
+    fırsat bulamayanlar ve ekran okuyucu kullananlar için dinlenebilir bir
+    alternatif üretmektir.
+  </p>
+
+  <h2>Nasıl çalışır</h2>
+  <ol>
+    <li>Köşe yazıları sayfası günde bir kez taranır, daha önce işlenmemiş yazılar alınır.</li>
+    <li>Yazı metni Türkçe metin okuma motoruyla seslendirilir.</li>
+    <li>Ses kaydı, yazının başlığını ve yazarını gösteren sabit bir kartla videoya dönüştürülür.</li>
+    <li>Video, YouTube Data API v3 ile hesap sahibinin kendi kanalına yüklenir.</li>
+  </ol>
+
+  <h2>Kaynak ve haklar</h2>
+  <p>
+    Yazıların tüm hakları yazarlarına ve soL Haber Portalı'na aittir. redcast
+    yalnızca seslendirme yapar; metinleri değiştirmez, kısaltmaz veya
+    yorumlamaz. Her kaydın açıklamasında yazar adı, yayın tarihi, kaydın yapay
+    sesle üretildiği bilgisi ve yazının özgün adresine bağlantı yer alır.
+    Hak sahiplerinin talebi hâlinde ilgili kayıtlar yayından kaldırılır.
+  </p>
+
+  <h2>İletişim</h2>
+  <p>
+    Kaldırma talepleri ve diğer sorular için:
+    <a href="mailto:tcanatilgan@gmail.com">tcanatilgan@gmail.com</a>
+  </p>
+
+  <footer>
+    <a href="privacy.html">Gizlilik Politikası</a>
+  </footer>
+</main>
+</body>
+</html>
