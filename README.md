@@ -2,14 +2,14 @@
 
 A daily podcast pipeline. It reads the opinion columns published at
 [haber.sol.org.tr/kose-yazilari](https://haber.sol.org.tr/kose-yazilari),
-narrates them in Turkish with Google Cloud TTS, renders each one as a video,
+narrates them in Turkish with ElevenLabs and Google Cloud TTS, renders each one as a video,
 publishes it to YouTube in a playlist for that day, and archives the audio and
 transcript to MinIO.
 
 It runs unattended, once every morning.
 
 ```
-scrape → normalise → TTS → MP4 → YouTube → MinIO → prune
+scrape → normalise → TTS → MP4 → YouTube → MinIO → prune → EMA comparison copy
 ```
 
 Every column keeps its author's byline, the publication date, a note that the
@@ -22,11 +22,12 @@ narration is synthetic, and a link back to the original article.
 | Stage | Script | What it does |
 |---|---|---|
 | scrape | `sol_column_scraper.py` | Reads the column index, fetches anything new, stores the transcript verbatim |
-| TTS | `tts_converter.py` | Google Chirp 3: HD, two Turkish voices in rotation |
+| TTS | `tts_converter.py` | ElevenLabs while the monthly budget lasts, then Google Chirp 3: HD (two Turkish voices in rotation) |
 | render | `mp3_to_video.py` | Muxes the audio with a generated title card into an H.264/AAC MP4 |
 | publish | `youtube_uploader.py` | Resumable upload, then adds the episode to that day's playlist |
 | archive | `sol_storage.py` | Audio, transcript and metadata to MinIO (S3-compatible) |
 | prune | `podcast.py prune` | Deletes local media after the retention window |
+| compare | `ema_compare.py` | Re-voices ElevenLabs columns with EMA Lightning, offline; never published |
 | orchestration | `run_pipeline.py` | Runs the stages in order |
 
 Supporting modules: `sol_state.py` (the ledger), `text_normalize.py` and
@@ -118,6 +119,29 @@ the tables could ever reach them.
 
 ---
 
+## EMA Lightning comparison
+
+[EMA Lightning](https://huggingface.co/canberkkkkkk/ema-lightning) is a small
+Turkish-only TTS model that runs offline on the CPU, at roughly six times real
+time. It costs nothing per character, so it is a candidate to replace the paid
+voice - but only once it has been heard on the same material.
+
+`ema_compare.py` therefore narrates every column that went to ElevenLabs a
+second time, from the same transcript and through the same Turkish rules as
+Chirp 3. The copy is **never published**:
+
+- Local: `articles/compare/ema/<file>.mp3`
+- MinIO: `compare/ema/<file>.mp3`, apart from `audio/`, which feeds YouTube
+- Ledger: `ema_audio_file`, `ema_seconds` (generation time), `ema_audio_seconds`
+
+It runs as the last, non-critical step of the daily job, at most two columns a
+night, so a slow single-core server can only ever cut off the comparison, never
+the upload or the archive. Without the `ema-lightning` package the step reports
+that and exits cleanly; `run_pipeline.py --skip-ema` turns it off. Prune leaves
+the copies alone. Server setup (CPU-only torch, model cache) is in `DEPLOY.md`.
+
+---
+
 ## Dates
 
 The date of a column comes from the **index page**, not the article page. sol
@@ -186,6 +210,7 @@ python podcast.py status        # every column and the stages it has cleared
 python podcast.py cost          # characters billed and quota spent, by month
 python podcast.py reconcile     # clear stage flags whose output file is missing
 python sol_storage.py check     # archive connectivity and object counts
+python ema_compare.py --force <id>  # re-render one column's EMA comparison copy
 bash deploy/healthcheck.sh      # everything the 06:00 run depends on
 ```
 
