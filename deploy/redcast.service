@@ -1,0 +1,47 @@
+[Unit]
+Description=soL column -> YouTube podcast pipeline
+Documentation=file:/opt/redcast/DEPLOY.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=redcast
+Group=redcast
+WorkingDirectory=/opt/redcast
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONIOENCODING=utf-8
+Environment=TZ=Europe/Istanbul
+# ProtectHome hides ~/.cache, so the EMA Lightning weights are kept here.
+Environment=HF_HOME=/opt/redcast/.cache/huggingface
+Environment=HF_HUB_DISABLE_SYMLINKS_WARNING=1
+
+# --since-days 2 covers yesterday's columns (complete by 06:00) plus a night of
+# slack, so a failed or missed run is picked up the next morning. The ledger
+# stops anything already handled from being processed twice.
+# --upload-limit 6 keeps one
+# run inside the 10,000-unit daily YouTube quota (1600 per upload).
+# --retain-days 30 keeps the audio on disk for a month after publishing,
+# then prunes it (~690 MB/month at the measured ~2 columns a day).
+ExecStart=/opt/redcast/.venv/bin/python run_pipeline.py \
+    --since-days 2 --engine auto --upload --privacy public \
+    --upload-limit 6 --retain-days 30
+
+StandardOutput=append:/opt/redcast/logs/pipeline.log
+StandardError=append:/opt/redcast/logs/pipeline.log
+
+# A stuck ffmpeg or a hung upload must not wedge the timer forever.
+TimeoutStartSec=45min
+
+# Hardening: the job only ever needs its own directory.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/redcast
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+
+[Install]
+WantedBy=multi-user.target

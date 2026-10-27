@@ -1,0 +1,26 @@
+# Scrape - plain HTTP, no browser needed (the site is server rendered).
+# curl_cffi is not optional on a server: Cloudflare 403s any client whose TLS
+# fingerprint is not a browser's, and impersonation is what gets past it.
+requests>=2.31
+curl_cffi>=0.7
+beautifulsoup4>=4.12
+
+# TTS
+edge-tts>=6.1
+
+# EMA Lightning comparison copy (ema_compare.py). On Linux install torch first
+# from https://download.pytorch.org/whl/cpu - deploy/install.sh does - or pip
+# fetches the CUDA build.
+ema-lightning>=1.0.4
+
+# MP4 render (imageio-ffmpeg ships a static ffmpeg binary, incl. Linux)
+pillow>=10.0
+imageio-ffmpeg>=0.4.9
+
+# YouTube Data API v3 upload
+google-api-python-client>=2.100
+google-auth-oauthlib>=1.2
+google-auth-httplib2>=0.2
+
+# MinIO / S3 archive
+boto3>=1.34

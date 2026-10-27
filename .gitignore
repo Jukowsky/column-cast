@@ -1,0 +1,40 @@
+# ---------------------------------------------------------------- credentials
+# Never commit. Belt-and-braces: exact names first, then broad patterns, so a
+# newly added credential file is ignored by default rather than by memory.
+client_secrets.json
+token.json
+service_account.json
+gcp_service_account.json
+api_key.json
+credentials.json
+minio_config.json
+channel.json
+google_tts_key.txt
+elevenlabs_key.txt
+elevenlabs.json
+*_secret*.json
+*credential*.json
+*.pem
+*.key
+
+# ------------------------------------------------------------- runtime state
+# The ledger records what has already been published. It belongs to the running
+# server, not to the repository - committing it would let a checkout re-upload
+# everything.
+state.json
+state.json.tmp
+PRODUCTION
+
+# ------------------------------------------------------------------- artefacts
+articles/
+logs/
+*.tar.gz
+
+# ----------------------------------------------------------------- environment
+.venv/
+__pycache__/
+*.pyc
+.idea/
+
+# Deploy target (server address) - local only
+deploy/target

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>redcast — audio archive of soL columns</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0; padding: 3rem 1.25rem;
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #12161e; color: #e8e8ea;
+  }
+  main { max-width: 42rem; margin: 0 auto; }
+  h1 { font-size: 1.9rem; margin: 0 0 .25rem; }
+  .accent { color: #e05252; }
+  .lede { color: #a8adb8; margin: 0 0 2.5rem; }
+  h2 { font-size: 1.1rem; margin: 2.25rem 0 .6rem; }
+  ol { padding-left: 1.2rem; }
+  li { margin: .35rem 0; }
+  a { color: #7fb2ff; }
+  footer { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid #2a2f3a; color: #8b909c; font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>red<span class="accent">cast</span></h1>
+  <p class="lede">An audio archive of opinion columns.</p>
+
+  <p>
+    redcast is a personal automation tool that follows the opinion columns
+    published on <a href="https://haber.sol.org.tr/kose-yazilari">haber.sol.org.tr</a>
+    each day, narrates them with a Turkish synthetic (text-to-speech) voice, and
+    publishes the recordings on a YouTube channel. Its purpose is to offer a
+    listenable alternative for people who don't have time to read the columns
+    and for screen-reader users.
+  </p>
+
+  <h2>How it works</h2>
+  <ol>
+    <li>The columns page is checked once a day, and columns not yet processed are collected.</li>
+    <li>The column text is narrated with a Turkish text-to-speech engine.</li>
+    <li>The audio is turned into a video with a static card showing the column's title and author.</li>
+    <li>The video is uploaded to the account owner's own channel using the YouTube Data API v3.</li>
+  </ol>
+
+  <h2>Source and rights</h2>
+  <p>
+    All rights to the columns belong to their authors. redcast only provides
+    narration; it does not alter, shorten or comment on the texts. Each
+    recording's description includes the author's name, the publication date,
+    a note that the recording was produced with a synthetic voice, and a link
+    to the original column. Recordings are taken down at the request of the
+    rights holders.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    For takedown requests and other questions:
+    <a href="mailto:tcanatilgan@gmail.com">tcanatilgan@gmail.com</a>
+  </p>
+
+  <footer>
+    <a href="privacy.html">Privacy Policy</a>
+  </footer>
+</main>
+</body>
+</html>

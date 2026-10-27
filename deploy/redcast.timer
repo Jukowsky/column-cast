@@ -1,0 +1,19 @@
+[Unit]
+Description=Run the soL podcast pipeline once a day
+Documentation=file:/opt/redcast/DEPLOY.md
+
+[Timer]
+# 06:00 Istanbul. Paired with --since-days 2 in the service: at 06:00 the
+# current day has no columns yet, so a "today only" filter would process
+# nothing every single morning. The window looks back instead.
+#
+# The timezone is stated explicitly because systemd evaluates OnCalendar in the
+# SYSTEM timezone, which is UTC on this box - Environment=TZ in the service unit
+# only affects the process, not the schedule.
+OnCalendar=*-*-* 06:00:00 Europe/Istanbul
+Persistent=true
+# Avoid hitting sol.org.tr and YouTube at a round number with everyone else.
+RandomizedDelaySec=10min
+
+[Install]
+WantedBy=timers.target
